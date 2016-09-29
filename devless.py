@@ -1,7 +1,8 @@
 import requests
 import random
+import itertools
 import json 
-import sys
+import sys 
 
 class Sdk(object):
 
@@ -21,13 +22,24 @@ class Sdk(object):
    		
 	def addData(self, service, table, data):
 		data   = json.dumps({"resource": [ {'name':table,"field":[data] } ]})
-		
 		subUrl = '/api/v1/service/{service}/db'.format(service=service)
   		return self.request_processor(data, subUrl, 'POST')
 
 	def getData(self, service, table):
 		data   = {}
-		subUrl = '/api/v1/service/{service}/db?table={table}'.format(service=service,table=table)
+		params = self.payload['params'] if 'params' in self.payload else ''
+		def queryMaker(params):
+			queryParams = ''
+			for key, value in params.iteritems():
+				if(type(value) == list):
+					for key_word in value:
+						queryParams += "&{key}={key_word}".format(key=key, key_word=key_word)
+				else:
+					queryParams = "&{key}={value}{queryParams}".format(key=key, value=value,
+						queryParams=queryParams)
+			return queryParams
+		query = queryMaker(params) if params != None else ''	
+		subUrl = '/api/v1/service/{service}/db?table={table}{query}'.format(service=service, table=table, query=query)
 		return self.request_processor(data, subUrl, 'GET')
 	
 	def updateData(self, service, table, data):
@@ -57,14 +69,28 @@ class Sdk(object):
 		self.bindToParams('where', param)
 		return self
 
+	def offset(self, value):
+		self.bindToParams('offset', value)
+		return self
+
+	def orderBy(self, value):
+		self.bindToParams('orderBy', value)
+		return self
+
+	def size(self, value):
+		self.bindToParams('size', value)
+		return self
+
 	def bindToParams(self, methodName, args):
 		if methodName == 'where':
-			self.payload['params'][methodName] = None if methodName in self.payload['params'] else []
+			self.payload['params'][methodName] =  [] if not methodName in self.payload['params'] else self.payload['params'][methodName]
 			self.payload['params'][methodName].append(args)
 		else:
 			self.payload['params'][methodName] = None if methodName in self.payload['params'] else ''
 			self.payload['params'][methodName] = args;
 
+	def seq_iter(self, obj):
+	    return obj if isinstance(obj, list) else iteritems(obj)		
 
 	def request_processor(self, data, subUrl, method):
 		url = "{instance_url}{subUrl}".format(
@@ -81,13 +107,13 @@ class Sdk(object):
 
 mo  = Sdk("http://localhost:8000", "955c8a0dc37b4a22b5950a9e0e9491d0")
 
-data = {"name":"muvic", "country":"swiss"}
+#data = {"name":"muvic", "country":"swiss"}
 #output = mo.where('id', 6).deleteData('event', 'event-table')
 
 token = mo.call('dvauth', 'login', {'email':'k@gmail.com', 'password':'password'})
 
 mo.setUserToken(token['payload']['result'])
-output = mo.getData('event','event-table');
+output = mo.where('id', 1).where('name','edmond').getData('event','event-table');
 print output
 
 #'devless-user-token': "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.IntcInRva2VuXCI6XCJlNWFmZmQ5YzcxODhlYTYwNDc2NWJiODdiNTkwODcxMlwifSI.w_uYJb7GNzCLPmKosoESywY1EDB5K9Vr6AquKOaKL4g",
