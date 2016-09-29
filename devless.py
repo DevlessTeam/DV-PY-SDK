@@ -1,4 +1,5 @@
 import requests
+import random
 import json 
 import sys
 
@@ -41,12 +42,17 @@ class Sdk(object):
 		subUrl = '/api/v1/service/{service}/db'.format(service=service)
 		return self.request_processor(data, subUrl, 'DELETE')
 
+	def call(self, service, method, params=[]):
+		call_id = random.randint(1, 200000)
+		params  = json.dumps({ "jsonrpc":"2.0","method":service,"id":call_id,"params":params})
+		subUrl = "/api/v1/service/{service}/rpc?action={method}".format(service=service, method=method)
+		return self.request_processor(params, subUrl, 'POST')
+
 	def where(self, column, value):
 		param = "{column},{value}".format(column=column, value=value)
 		self.bindToParams('where', param)
 		return self
 
-	
 	def bindToParams(self, methodName, args):
 		if methodName == 'where':
 			self.payload['params'][methodName] = None if methodName in self.payload['params'] else []
@@ -73,8 +79,8 @@ mo  = Sdk("http://localhost:8000", "955c8a0dc37b4a22b5950a9e0e9491d0")
 
 data = {"name":"muvic", "country":"swiss"}
 #output = mo.where('id', 6).deleteData('event', 'event-table')
-output = mo.getData('event','event-table');
-
+#output = mo.getData('event','event-table');
+output = mo.call('event', 'methodthree')
 print output
 
 #'devless-user-token': "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.IntcInRva2VuXCI6XCJlNWFmZmQ5YzcxODhlYTYwNDc2NWJiODdiNTkwODcxMlwifSI.w_uYJb7GNzCLPmKosoESywY1EDB5K9Vr6AquKOaKL4g",
