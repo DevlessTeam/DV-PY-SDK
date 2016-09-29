@@ -101,17 +101,3 @@ class Sdk(object):
 		end    = output_text.rfind('}')
 		json_output = output_text[start:end+1] if start is not -1 or end is not -1 else output_text
 		return json.loads(json_output)
-		
-
-mo  = Sdk("http://localhost:8000", "955c8a0dc37b4a22b5950a9e0e9491d0")
-
-#data = {"name":"muvic", "country":"swiss"}
-#output = mo.where('id', 6).deleteData('event', 'event-table')
-
-token = mo.call('dvauth', 'login', {'email':'k@gmail.com', 'password':'password'})
-
-mo.setUserToken(token['payload']['result'])
-output = mo.where('id', 1).where('name','edmond').getData('event','event-table');
-print output
-
-#'devless-user-token': "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.IntcInRva2VuXCI6XCJlNWFmZmQ5YzcxODhlYTYwNDc2NWJiODdiNTkwODcxMlwifSI.w_uYJb7GNzCLPmKosoESywY1EDB5K9Vr6AquKOaKL4g",
