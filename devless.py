@@ -1,8 +1,6 @@
 import requests
 import random
-import itertools
 import json 
-import sys 
 
 class Sdk(object):
 
