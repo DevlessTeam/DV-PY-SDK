@@ -11,7 +11,7 @@ Official Devless py sdk
 ```
 
 
-devless = new Sdk("http://example.com", "1234567abcdefghijklmnopqrst");
+devless = Sdk("http://example.com", "1234567abcdefghijklmnopqrst");
 
 ```
 ### To add data to table 
