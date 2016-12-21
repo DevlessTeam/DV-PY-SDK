@@ -1,5 +1,5 @@
 # Devless Python SDK
-Allows you use python to manage and administer your Devless service integrations in Python.
+Allows you manage and administer your Devless service integrations in Python.
 
 ## Install
 
