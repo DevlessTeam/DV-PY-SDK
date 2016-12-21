@@ -12,9 +12,11 @@ In your project's python file, simply import the devless.py module
 
 ### To connect to the Devless instance 
 
+Pass your Devless instance URL and token generated on your dashboard to the Sdk object.
+
 ```python
 
-devless = Sdk("http://example.com", "1234567abcdefghijklmnopqrst")
+devless = Sdk("http://example.herokuapp.com", "1234567abcdefghijklmnopqrst")
 
 ```
 
@@ -24,7 +26,7 @@ devless = Sdk("http://example.com", "1234567abcdefghijklmnopqrst")
 
 data = {"name":"edmond"}
 results = devless.add_data('service_name', 'service_table', data)
-print results
+print(results)
 
 ```
 
