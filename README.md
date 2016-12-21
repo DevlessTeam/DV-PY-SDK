@@ -40,9 +40,11 @@ print(results)
 
 ``size`` : determine the number of results to return, like this:
 
-```python
+``python
 
 results = devless.size(3).get_data('service_name', 'service_table')
+
+``
 
 ``offset`` : Set step in data data to be sent back: 
 
@@ -50,19 +52,25 @@ results = devless.size(3).get_data('service_name', 'service_table')
 
 ``python
 
-results = devless.offset(2).size(6).get_data('service_name', 'service_table') ```
+results = devless.offset(2).size(6).get_data('service_name', 'service_table') 
+
+``
 
 ``where`` : Get data based where a key matches a certain value: 
 
-```python
+``python
 
-results = devless.where('name', 'edmond').get_data('service_name', 'service_table') ```
+results = devless.where('name', 'edmond').get_data('service_name', 'service_table') 
+
+``
 
 ``orderBy`` : Order incoming results in descending order based on a key 
 
 ``python
 
-results = devless.orderBy('name').get_data('service_name', 'service_table') ``
+results = devless.orderBy('name').get_data('service_name', 'service_table') 
+
+``
 
 
 ### To update data to table 
