@@ -5,7 +5,7 @@ Allows you manage and administer your Devless service integrations in Python.
 
 In your project's python file, simply import the devless.py module
 
-`import Devless` 
+`import devless` 
 
 
 ## Getting started 

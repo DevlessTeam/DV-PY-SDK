@@ -28,7 +28,7 @@ class Sdk(object):
         params = self.payload['params'] if 'params' in self.payload else ''
         def queryMaker(params):
             queryParams = ''
-            for key, value in params.iteritems():
+            for key, value in params.items():
                 if(type(value) == list):
                     for key_word in value:
                         queryParams += "&{key}={key_word}".format(key=key, key_word=key_word)
