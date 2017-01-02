@@ -26,17 +26,17 @@ class Sdk(object):
     def get_data(self, service, table):
         data   = {}
         params = self.payload['params'] if 'params' in self.payload else ''
-        def query_maker(params):
-            query_params = ''
+        def queryMaker(params):
+            queryParams = ''
             for key, value in params.items():
                 if(type(value) == list):
                     for key_word in value:
-                        query_params += "&{key}={key_word}".format(key=key, key_word=key_word)
+                        queryParams += "&{key}={key_word}".format(key=key, key_word=key_word)
                 else:
-                    query_params = "&{key}={value}{query_params}".format(key=key, value=value,
-                        query_params=query_params)
-            return query_params
-        query = query_maker(params) if params != None else ''    
+                    queryParams = "&{key}={value}{queryParams}".format(key=key, value=value,
+                        queryParams=queryParams)
+            return queryParams
+        query = queryMaker(params) if params != None else ''    
         sub_url = '/api/v1/service/{service}/db?table={table}{query}'.format(service=service, table=table, query=query)
         return self.request_processor(data, sub_url, 'GET')
     

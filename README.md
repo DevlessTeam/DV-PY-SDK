@@ -16,7 +16,7 @@ Pass your Devless instance URL and token generated on your dashboard to the Sdk 
 
 ```python
 
-devless = devless.Sdk("http://example.herokuapp.com", "1234567abcdefghijklmnopqrst")
+devless = Sdk("http://example.herokuapp.com", "1234567abcdefghijklmnopqrst")
 
 ```
 
