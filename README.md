@@ -1,87 +1,114 @@
-DevlessTeam/DV-PY-SDK)
+# Devless Python SDK
+Allows you manage and administer your Devless service integrations in Python.
+
 ## Install
 
-# DV-PY-SDK
-Official Devless py sdk
+In your project's python file, simply import the devless.py module
 
-# Getting started 
+`import devless` 
+
+
+## Getting started 
 
 ### To connect to the Devless instance 
 
+Pass your Devless instance URL and token generated on your dashboard to the Sdk object.
+
+```python
+
+devless = devless.Sdk("http://example.herokuapp.com", "1234567abcdefghijklmnopqrst")
+
 ```
 
-
-devless = Sdk("http://example.com", "1234567abcdefghijklmnopqrst")
-
-```
 ### To add data to table 
 
-```
+```python
+
 data = {"name":"edmond"}
-results = devless.addData('service_name', 'service_table', data)
-print results
+results = devless.add_data('service_name', 'service_table', data)
+print(results)
 
 ```
 
 ### To query data from the Devless instance 
 
-```
-results = devless.getData('service_name','service_table')
-print results
+```python
+
+results = devless.get_data('service_name','service_table')
+print(results)
 
 ```
-### Also you may filter your query with : 
+### Optional filters for your query : 
 
-``size`` : determine the number of results to return 
+``size`` : determine the number of results to return, like this:
 
-``` eg: results = devless.size(3).getData('service_name', 'service_table')
+```python
 
-``offset`` : Set step in data data to be sent back 
+results = devless.size(3).get_data('service_name', 'service_table')
 
-## NB: This is to be used in combination with size
+```
 
-`` eg: results = devless.offset(2).size(6).getData('service_name', 'service_table') ```
+``offset`` : Set step in data data to be sent back: 
 
-`` where `` : Get data based where a key matches a certain value 
+#### NB: This is to be used in combination with size
 
-``` eg: results = devless.where('name', 'edmond').getData('service_name', 'service_table') ```
+```python
+
+results = devless.offset(2).size(6).get_data('service_name', 'service_table') 
+
+```
+
+``where`` : Get data based where a key matches a certain value: 
+
+```python
+
+results = devless.where('name', 'edmond').get_data('service_name', 'service_table') 
+
+```
 
 ``orderBy`` : Order incoming results in descending order based on a key 
 
-`` eg: results = devless.orderBy('name').getData('service_name', 'service_table') ``
+```python
+
+results = devless.orderBy('name').get_data('service_name', 'service_table') 
+
+```
 
 
 ### To update data to table 
 
-```
-results = devless.where('id',1).updateData('service_name', 'service_table', {'name':'edmond'})
+```python
 
-print results 
+results = devless.where('id',1).update_data('service_name', 'service_table', {'name':'edmond'})
+
+print(results) 
 
 ```
 
 ### To delete data from a Devless instance 
 
 ```
-results = devless.where('id',1).deleteData('service_name','service_table')
+results = devless.where('id',1).delete_data('service_name','service_table')
 
 ```
 
 ## Make a call to an Action Class 
 
-```
+```python
+
 results = devless.call('service_name','method_name', {})
 
-print results
+print(results)
 
 ```
 
 ## Authenticating with a Devless instance
 
-```
+```python
+
 token = devless.call('devless','login', {'email':'k@gmail.com', 'password':'password'});
 
-devless.setUserToken(token['payload']['result']);
+devless.set_user_token(token['payload']['result']);
 
 ```
 
