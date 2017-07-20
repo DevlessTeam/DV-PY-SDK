@@ -128,12 +128,11 @@ class Sdk(object):
         url = "{instance_url}{sub_url}".format(
             instance_url = self.connection['instance_url'], sub_url
             = sub_url)
-        print url
-        # response = requests.request(method,
-        #  url, data=data, headers=self.headers)
-        # output_text = response.text
-        # start  = output_text.find('{')
-        # end    = output_text.rfind('}')
-        # json_output = output_text[start:end+1] if start is not -1 or end is not -1 else output_text
-        # self.payload['params'] = {}
-        # return json.loads(json_output)
+        response = requests.request(method,
+         url, data=data, headers=self.headers)
+        output_text = response.text
+        start  = output_text.find('{')
+        end    = output_text.rfind('}')
+        json_output = output_text[start:end+1] if start is not -1 or end is not -1 else output_text
+        self.payload['params'] = {}
+        return json.loads(json_output)
