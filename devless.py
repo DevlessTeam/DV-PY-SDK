@@ -24,7 +24,6 @@ class Sdk(object):
         return self.request_processor(data, sub_url, 'POST')
 
     def get_data(self, service, table):
-        data   = {}
         params = self.payload['params'] if 'params' in self.payload else ''
         def query_maker(params):
             query_params = ''
@@ -38,7 +37,8 @@ class Sdk(object):
             return query_params
         query = query_maker(params) if params != None else ''    
         sub_url = '/api/v1/service/{service}/db?table={table}{query}'.format(service=service, table=table, query=query)
-        return self.request_processor(data, sub_url, 'GET')
+        query = ''
+        return self.request_processor({}, sub_url, 'GET')
     
     def update_data(self, service, table, data):
         params = self.payload['params']['where'][0]
@@ -67,12 +67,46 @@ class Sdk(object):
         self.bind_to_params('where', param)
         return self
 
+    def orWhere(self, column, value):
+        param = "{column},{value}".format(column=column, value=value)
+        self.bind_to_params('orWhere', param)
+        return self
+    
     def offset(self, value):
         self.bind_to_params('offset', value)
         return self
 
     def order_by(self, value):
         self.bind_to_params('order_by', value)
+        return self
+
+    def greaterThan(self, field, number):
+        params = "{field},{number}".format(field=field, number=number)
+        self.bind_to_params('greaterThan', params)
+        return self
+
+    def lessThan(self, field, number):
+        params = "{field},{number}".format(field=field, number=number)
+        self.bind_to_params('lessThan', params)
+        return self
+
+    def greaterThanEqual(self, field, number):
+        params = "{field},{number}".format(field=field, number=number)
+        self.bind_to_params('greaterThanEqual', params)
+        return self
+    
+    def lessThanEqual(self, field, number):
+        params = "{field},{number}".format(field=field, number=number)
+        self.bind_to_params('lessThanEqual', params)
+        return self
+
+    def query_params(self, name, params = []):
+        self.bind_to_params(name, str.join(params))
+        return self
+
+    def search(field, word):
+        params = "{field},{word}".format(field=field, word=word)
+        self.bind_to_params('search', params)
         return self
 
     def size(self, value):
@@ -94,10 +128,12 @@ class Sdk(object):
         url = "{instance_url}{sub_url}".format(
             instance_url = self.connection['instance_url'], sub_url
             = sub_url)
-        response = requests.request(method,
-         url, data=data, headers=self.headers)
-        output_text = response.text
-        start  = output_text.find('{')
-        end    = output_text.rfind('}')
-        json_output = output_text[start:end+1] if start is not -1 or end is not -1 else output_text
-        return json.loads(json_output)
+        print url
+        # response = requests.request(method,
+        #  url, data=data, headers=self.headers)
+        # output_text = response.text
+        # start  = output_text.find('{')
+        # end    = output_text.rfind('}')
+        # json_output = output_text[start:end+1] if start is not -1 or end is not -1 else output_text
+        # self.payload['params'] = {}
+        # return json.loads(json_output)
